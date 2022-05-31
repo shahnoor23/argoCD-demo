@@ -1,10 +1,7 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
 metadata:
-  name: "2048-deployment"
-  annotations:
-    argocd-image-updater.argoproj.io/image-list: alexwhen/docker-2048
-    argocd-image-updater.argoproj.io/write-back-method: git:secret:argocd/git-creds  
+  name: 2048-game
 spec:
   strategy:
     canary:
