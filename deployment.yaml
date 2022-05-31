@@ -6,6 +6,17 @@ metadata:
     argocd-image-updater.argoproj.io/image-list: alexwhen/docker-2048
     argocd-image-updater.argoproj.io/write-back-method: git:secret:argocd/git-creds  
 spec:
+  strategy:
+    canary:
+      steps:
+      - setWeight: 20
+      - pause: {}
+      - setWeight: 40
+      - pause: {duration: 10}
+      - setWeight: 60
+      - pause: {duration: 10}
+      - setWeight: 80
+      - pause: {duration: 10}
   selector:
     matchLabels:
       app: "2048"
