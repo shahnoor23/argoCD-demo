@@ -24,7 +24,7 @@ spec:
         app: "2048"
     spec:
       containers:
-        - image: gametron/minecraft
+        - image: jsonsong/docker-2048
           imagePullPolicy: Always
           name: "2048"
           ports:
