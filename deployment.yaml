@@ -5,6 +5,11 @@ metadata:
 spec:
   strategy:
     canary:
+      canary:
+      canaryService: rollouts-demo-canary
+      stableService: rollouts-demo-stable
+      trafficRouting:
+        smi: {}
       steps:
       - setWeight: 20
       - pause: {}
@@ -20,6 +25,8 @@ spec:
   replicas: 4
   template:
     metadata:
+      annotations:
+        linkerd.io/inject: enabled
       labels:
         app: "2048"
     spec:
