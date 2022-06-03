@@ -1,39 +1,37 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
-  name: 2048-game
+  name: rollouts-demo
 spec:
+  replicas: 1
   strategy:
     canary:
-      canary:
       canaryService: rollouts-demo-canary
       stableService: rollouts-demo-stable
       trafficRouting:
         smi: {}
       steps:
-      - setWeight: 20
+      - setWeight: 5
       - pause: {}
-      - setWeight: 40
-      - pause: {duration: 10}
-      - setWeight: 60
-      - pause: {duration: 10}
-      - setWeight: 80
-      - pause: {duration: 10}
+  revisionHistoryLimit: 2
   selector:
     matchLabels:
-      app: "2048"
-  replicas: 4
+      app: rollouts-demo
   template:
     metadata:
       annotations:
         linkerd.io/inject: enabled
       labels:
-        app: "2048"
+        app: rollouts-demo
     spec:
       containers:
-        - image: jsonsong/docker-2048
-          imagePullPolicy: Always
-          name: "2048"
-          ports:
-            - containerPort: 80
-              protocol: TCP
+      - name: rollouts-demo
+        image: argoproj/rollouts-demo:blue
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+        resources:
+          requests:
+            memory: 32Mi
+            cpu: 5m
